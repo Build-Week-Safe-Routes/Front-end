@@ -1,6 +1,7 @@
 import React from 'react';
 // import {Route, Switch} from 'react-router-dom'
 import './App.css';
+
 import SampleMap from "./assets/SampleMap.png";
 // import Login from "./Login"
 import {Button, Image, Input} from 'semantic-ui-react';
@@ -24,6 +25,7 @@ const App = () => {
     <div className="button-container">
      <Input className="search-box" icon='search' placeholder='Search...' />    
       <Button primary>Login</Button>
+
     </div>
             
     </section>
