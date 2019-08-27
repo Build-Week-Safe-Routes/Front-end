@@ -3,7 +3,6 @@ import React from 'react';
 import './App.css';
 import SampleMap from "./assets/SampleMap.png";
 // import Login from "./Login"
-// // // import ResizeImage from 'react-resize-image'
 import {Button, Image, Input} from 'semantic-ui-react';
 
 
