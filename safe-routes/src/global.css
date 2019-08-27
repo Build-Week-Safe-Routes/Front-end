@@ -1,0 +1,14 @@
+* {
+
+background: slategray;
+width: 100%;
+}
+
+body {
+    display: flexbox;
+    justify-content: center;
+    width: 90%;
+    height: 90%;
+    border: 2px solis silver;
+    margin: 0% 5% 20% 1% 5%;
+}
