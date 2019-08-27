@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
+import './SearchBox.css';
 
 const SearchBox = ({ map, mapApi }) => {
   const searchRef = React.createRef();
@@ -17,11 +18,9 @@ const SearchBox = ({ map, mapApi }) => {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     }
+    console.log('Lat', place.geometry.location.lat());
+    console.log('Lng', place.geometry.location.lng());
   }, [map]);
-
-  const clearSearchBox = () => {
-    searchRef.value = '';
-  }
 
   useEffect(() => {
     if (mapApi) {
@@ -30,6 +29,7 @@ const SearchBox = ({ map, mapApi }) => {
       const searchBox = new mapApi.places.Autocomplete(search);
       searchBox.addListener('place_changed', () => onPlaceChanged(searchBox.getPlace()));
       searchBox.bindTo('bounds', map);
+      map.controls[mapApi.ControlPosition.TOP_CENTER].push(search);
       console.log('whoops');
       return () => {
         mapApi.event.clearInstanceListeners(searchBox);
@@ -38,7 +38,7 @@ const SearchBox = ({ map, mapApi }) => {
   }, [map, mapApi, onPlaceChanged, searchRef])
 
   return (
-    <input ref={searchRef} type="text" />
+    <input className="search-box" ref={searchRef} type="text" />
   )
 }
 
