@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import Map from "./components/Map"
-import Search from "./components/Search"
 
 const App = () => {
   return (
