@@ -34,10 +34,11 @@
 
 // export default SimpleMap;
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
 import Marker from './Marker';
 import SearchBox from './SearchBox';
+import axios from 'axios';
 
 const SimpleMap = (props) => {
   const [googleMap, setGoogleMap] = useState({
@@ -49,8 +50,6 @@ const SimpleMap = (props) => {
   const getMapOptions = (maps) => {
     return {
       disableDefaultUI: false,
-      mapTypeControl: true,
-      streetViewControl: true,
       styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] }],
     };
   };
@@ -64,37 +63,48 @@ const SimpleMap = (props) => {
     })
   };
 
-  const [lat, setLat] = useState(47.606358)
-  const [lng, setLng] = useState(-122.332680)
-  const [center, setCenter] = useState([lat, lng]);
+  const [coords, setCoords] = useState({
+    lat: 47.606358,
+    lng: -122.332680,
+  });
+  const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(11);
+  const [accidents, setAccidents] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.post('https://protected-badlands-42757.herokuapp.com/api/accident/coords', {
+        LATITUDE: coords.lat,
+        LONGITUD: coords.lng,
+      });
+      console.log(response);
+      setAccidents(response.data);
+    })();
+  }, [coords])
 
   return (
     <div style={{ height: '80vh', width: '100%' }}>
       {
         googleMap.mapApiLoaded && (
-          <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} />
+          <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
         )
       }
       <GoogleMap
-      bootstrapURLKeys={{
-          key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
-          libraries: ['places', 'visualization', 'geometry'],
-          }}
-      defaultCenter={center}
-      defaultZoom={zoom}
-      options={getMapOptions}    
-      // heatmapLibrary={true}
-      // heatmap={{/*data*/}}
-      yesIWantToUseGoogleMapApiInternals={true}
-      onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-      >
-          <Marker
-              lat={lat}
-              lng={lng}
-              name="My Marker"
-              color="blue"
-          />
+        bootstrapURLKeys={{
+            key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
+            libraries: ['places', 'visualization', 'geometry'],
+            }}
+        defaultCenter={center}
+        defaultZoom={zoom}
+        options={getMapOptions}    
+        // heatmapLibrary={true}
+        // heatmap={{/*data*/}}
+        yesIWantToUseGoogleMapApiInternals={true}
+        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+        >
+          {
+            accidents.map(accident => <Marker lat={accident.LATITUDE} lng={accident.LONGITUD} name="My Marker" color="blue" key={accident.id} />)
+          }
       </GoogleMap>
     </div>
   );
