@@ -1,8 +1,10 @@
 import React from 'react'
-import { Button, Header, Image, Modal, Checkbox } from 'semantic-ui-react'
+import { Button, Header, Image, Modal, Checkbox, Form } from 'semantic-ui-react'
+// import {Link} from 'react-router-dom';
 
-const ModalExampleTopAligned = () => (
-  <Modal trigger={<Button>Show Modal</Button>} centered={false}>
+const LogInForm = () => (
+  // <Link to = "/">
+  <Modal trigger={<Button>Login</Button>} centered={false}>
     <Modal.Header>Log In</Modal.Header>
     <Modal.Content image>
       <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' />
@@ -27,6 +29,7 @@ const ModalExampleTopAligned = () => (
       </Modal.Description>
     </Modal.Content>
   </Modal>
+  // </Link>
 )
 
-export default ModalExampleTopAligned
+export default LogInForm
