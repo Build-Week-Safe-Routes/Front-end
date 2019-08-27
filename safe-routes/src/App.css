@@ -1,20 +1,28 @@
 
-.login-button {
-    display: flex;
-    width: 5rem;
-    height: automatic;
-    background:lightsteelblue;
-    color: aliceblue;
-    margin: 1% 0% 1% 5%;
+
+.button-container {
+
+    display: flexbox;
+    justify-content: space-between;
 }
 
-img {
-    display: flex;
-    
-    /* width: 96%;
-    height: 100%; */
-    margin: 0% 2% 0% 5% ;
-    border: 1px solid aliceblue;
-    scale:1.5;
-    
+.search-box {
+    display: inline-flexbox;
+    justify-content: flex-start;
+    width: 20%;
+    height: 2.5rem;
 }
+
+
+
+Button {
+    display: inline-flexbox;
+    justify-content:right;
+    width: 6rem;
+    height: 2.5rem;
+    background:lightsteelblue;
+    color: aliceblue;
+    margin: 0% ;
+    padding-bottom:2%;
+}
+/* size='large' */

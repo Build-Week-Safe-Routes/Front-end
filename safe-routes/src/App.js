@@ -1,10 +1,8 @@
 import React from 'react';
 import './App.css';
 import SampleMap from "./assets/SampleMap.png"
-import ResizeImage from 'react-resize-image'
-import {Button, Dropdown, Icon} from 'semantic-ui-react'
-
-
+// import ResizeImage from 'react-resize-image'
+import {Button, Image, Input} from 'semantic-ui-react';
 
 const App = () => {
 
@@ -12,40 +10,16 @@ const App = () => {
   
   return (
     
-    <section>    
-      <div class="login-button">
-         <Button primary>Login</Button>
+  <section className='contents'> 
+    <div className="button-container">
+     <Input className="search-box" icon='search' placeholder='Search...' />    
+      <Button primary>Login</Button>
     </div>
   
     
-  <Dropdown
-    text='Filter'
-    icon='filter'
-    floating
-    labeled
-    button
-    className='icon'
-  >
-    <Dropdown.Menu>
-      <Dropdown.Header icon='tags' content='Filter by tag' />
-      <Dropdown.Divider />
-      <Dropdown.Item>
-        <Icon name='wrench' className='right floated' />
-        Important
-      </Dropdown.Item>
-      <Dropdown.Item>
-        <Icon name='wrench' className='right floated' />
-        Announcement
-      </Dropdown.Item>
-      <Dropdown.Item>
-        <Icon name='conversation' className='right floated' />
-        Discussion
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Dropdown>
-   
-    <ResizeImage src= {SampleMap} alt="googleMap"
-      width="100%" height="100%" gravity="faces" crop="fill" />
+    <Image src={SampleMap} object-fit='contain' bordered  alt="googleMap" className= "main-image"/>
+
+ 
           
     </section>
 
