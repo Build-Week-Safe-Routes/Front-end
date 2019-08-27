@@ -2,7 +2,10 @@ import React from 'react'
 import { Button, Header, Image, Modal, Checkbox, Form } from 'semantic-ui-react'
 // import {Link} from 'react-router-dom';
 
-const LogInForm = () => (
+const Login = () => {
+  
+  return (
+
   // <Link to = "/">
   <Modal trigger={<Button>Login</Button>} centered={false}>
     <Modal.Header>Log In</Modal.Header>
@@ -29,7 +32,7 @@ const LogInForm = () => (
       </Modal.Description>
     </Modal.Content>
   </Modal>
-  // </Link>
+  //  </Link>
 )
-
-export default LogInForm
+  }
+export default Login

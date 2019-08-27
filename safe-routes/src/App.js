@@ -1,11 +1,12 @@
 import React from 'react';
+// import {Route, Switch} from 'react-router-dom'
 import './App.css';
 import SampleMap from "./assets/SampleMap.png";
-// import LoginForm from "./LoginForm"
-// import ResizeImage from 'react-resize-image'
+// import Login from "./Login"
+// // // import ResizeImage from 'react-resize-image'
 import {Button, Image, Input} from 'semantic-ui-react';
-// import Modal from "./LoginForm"
-// import {Switch, Route} from 'react-router-dom'
+
+
 
 
 
@@ -30,11 +31,11 @@ const App = () => {
  {/* // ***************Routing *************** */}
 
 <section className="routing">
-{/* <Switch>
-<Route path="/" exact component={App} />
-<Route path="/Login" component={LoginForm} />
-
-</Switch> */}
+  {/* <Switch>
+          <Route path="/" exact component={App} />
+          <Route path="/login" component={Login} />
+       
+  </Switch> */}
 </section>
 </section>
 
