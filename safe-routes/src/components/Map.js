@@ -64,12 +64,29 @@ const SimpleMap = (props) => {
   };
 
   const [coords, setCoords] = useState({
-    lat: 47.606358,
-    lng: -122.332680,
+    lat: 46.790768,
+    lng: -123.009968,
   });
   const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(11);
   const [accidents, setAccidents] = useState([]);
+
+  const handleClick = (key) => {
+    // console.log("Marker Clicked");
+
+    setAccidents(prevState => prevState.map( element => {
+      console.log(key);
+      console.log(element.id);
+      if (element.id === Number(key)) {
+        // console.log({...element, show : !element.show})
+        return {...element, show : !element.show}
+      }
+      else {
+        return element;
+      }
+    } ))
+    console.log(accidents);
+  }
 
   useEffect(() => {
     (async () => {
@@ -97,14 +114,24 @@ const SimpleMap = (props) => {
               }}
           defaultCenter={center}
           defaultZoom={zoom}
-          options={getMapOptions}    
+          options={getMapOptions}
+          onChildClick={handleClick}
           // heatmapLibrary={true}
           // heatmap={{/*data*/}}
           yesIWantToUseGoogleMapApiInternals={true}
           onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
             {
-              accidents.map(accident => <Marker lat={accident.LATITUDE} lng={accident.LONGITUD} name="My Marker" color="blue" key={accident.id} />)
+              accidents.map(accident => 
+                <Marker 
+                  lat={accident.LATITUDE} 
+                  lng={accident.LONGITUD} 
+                  name="My Marker" 
+                  color="blue" 
+                  key={accident.id} 
+                  accident={accident}
+                />
+              )
             }
         </GoogleMap>
       </div>
