@@ -83,30 +83,32 @@ const SimpleMap = (props) => {
   }, [coords])
 
   return (
-    <div style={{ height: '80vh', width: '100%' }}>
-      {
-        googleMap.mapApiLoaded && (
-          <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
-        )
-      }
-      <GoogleMap
-        bootstrapURLKeys={{
-            key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
-            libraries: ['places', 'visualization', 'geometry'],
-            }}
-        defaultCenter={center}
-        defaultZoom={zoom}
-        options={getMapOptions}    
-        // heatmapLibrary={true}
-        // heatmap={{/*data*/}}
-        yesIWantToUseGoogleMapApiInternals={true}
-        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-        >
-          {
-            accidents.map(accident => <Marker lat={accident.LATITUDE} lng={accident.LONGITUD} name="My Marker" color="blue" key={accident.id} />)
-          }
-      </GoogleMap>
-    </div>
+    <section className="map-container">
+      <div className="map">
+        {
+          googleMap.mapApiLoaded && (
+            <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
+          )
+        }
+        <GoogleMap
+          bootstrapURLKeys={{
+              key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
+              libraries: ['places', 'visualization', 'geometry'],
+              }}
+          defaultCenter={center}
+          defaultZoom={zoom}
+          options={getMapOptions}    
+          // heatmapLibrary={true}
+          // heatmap={{/*data*/}}
+          yesIWantToUseGoogleMapApiInternals={true}
+          onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+          >
+            {
+              accidents.map(accident => <Marker lat={accident.LATITUDE} lng={accident.LONGITUD} name="My Marker" color="blue" key={accident.id} />)
+            }
+        </GoogleMap>
+      </div>
+    </section>
   );
 }
 

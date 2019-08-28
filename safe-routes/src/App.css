@@ -2,11 +2,12 @@
 
 
 h1 {
+    display: none; 
     position: absolute;
-    top: 25px;
+    top: 50px;
     text-align: center;
-    color:skyblue;
-    font-size: 5rem;
+    color:royalblue;
+    font-size: 3rem;
     z-index: 2;
     background: transparent;
 }
@@ -17,19 +18,6 @@ h1 {
     justify-content: space-between;
    
 }
-
-.search-box {
-   position: absolute;
-    bottom:730px;
-           
-  font-size: 18px;
-    width: 20%;
-    height: 2.5rem;
-    z-index: 2;
-    margin-left: 2%;
-}
-
-
 
 Button {
     /* display: inline-flex; */
@@ -52,4 +40,15 @@ Button {
 /*  
     width: 100%;
     height: 100%; */
+}
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map {
+    width: 90%;
+    height: 90vh;
 }
