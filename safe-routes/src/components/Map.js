@@ -72,6 +72,7 @@ const SimpleMap = (props) => {
   const [zoom, setZoom] = useState(11);
   const [accidents, setAccidents] = useState([]);
   const [month, setMonth] = useState();
+  const [year, setYear] = useState(2017);
 
   const handleClick = (key) => {
     // console.log("Marker Clicked");
@@ -148,7 +149,7 @@ const SimpleMap = (props) => {
             <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
           )
         }
-        <DatePicker month={month} setMonth={setMonth} />
+        <DatePicker year={year} setYear={setYear} month={month} setMonth={setMonth} />
         <GoogleMap
           bootstrapURLKeys={{
               key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
@@ -165,7 +166,7 @@ const SimpleMap = (props) => {
           >
             {
               accidents
-              .filter(accident => !month || accident.MONTH === getNumberedMonth(month))
+              .filter(accident => accident.YEAR === year && (!month || accident.MONTH === getNumberedMonth(month)))
               .map(accident => 
                 <Marker 
                   lat={accident.LATITUDE} 

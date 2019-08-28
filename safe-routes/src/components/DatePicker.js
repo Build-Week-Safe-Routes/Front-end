@@ -1,17 +1,29 @@
 import React from 'react';
 import { Form, Button, Icon } from 'semantic-ui-react';
-import { MonthInput } from 'semantic-ui-calendar-react';
+import { MonthInput, YearInput } from 'semantic-ui-calendar-react';
 
 const DatePicker = (props) => {
-  const { month, setMonth } = props;
+  const { month, setMonth, year, setYear } = props;
 
   const handleChange = (event, { name, value }) => {
-    setMonth(value);
+    if (name === "month") {
+      setMonth(value);
+    } else if (name === "year") {
+      setYear(Number(value));
+    }
   }
   
   return (
     <>
       <Form>
+        <YearInput
+          name="year"
+          placeholder="Year"
+          iconPosition="left"
+          value={year}
+          popupPosition="bottom left"
+          onChange={handleChange}
+        />
         <MonthInput 
           name="month"
           placeholder="Month"
