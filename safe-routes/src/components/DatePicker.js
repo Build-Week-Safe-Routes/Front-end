@@ -23,7 +23,7 @@ const DatePicker = (props) => {
         />
       </Form>
       <div className="button-wrapper">
-        <Button primary><Icon name="home" />Safe Routes</Button>
+        <Button primary><Icon name="home" />Home</Button>
       </div>
     </>
   )
