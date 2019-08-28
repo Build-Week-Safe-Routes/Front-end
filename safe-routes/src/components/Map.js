@@ -141,6 +141,12 @@ const SimpleMap = (props) => {
     })();
   }, [coords])
 
+  const handleMapClick = () => {
+    setAccidents(prevState => prevState.map( element => {
+        return {...element, show: false};
+    }))
+  }
+
   return (
     <section className="map-container">
       <div className="map">
@@ -158,6 +164,7 @@ const SimpleMap = (props) => {
           defaultCenter={center}
           defaultZoom={zoom}
           options={getMapOptions}
+          onClick={handleMapClick}
           onChildClick={handleClick}
           // heatmapLibrary={true}
           // heatmap={{/*data*/}}
