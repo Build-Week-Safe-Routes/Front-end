@@ -94,6 +94,35 @@ const SimpleMap = (props) => {
     return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1;
   }
 
+  const getConvertedData = (data) => {
+    let FUNC_SYS = 99;
+    
+    switch (data.FUNC_SYS) {
+      case "INTERSTATE": 
+        FUNC_SYS = 1;
+        break;
+      case "COLLECTOR":
+        FUNC_SYS = 5;
+        break;
+      case "LOCAL":
+        FUNC_SYS = 7;
+        break;
+      case "ARTERY":
+        FUNC_SYS = 2;
+        break;
+      default:
+        FUNC_SYS = 99;
+    }
+
+    const RELJCT1 = data.TYP_INT === "NOT AN INTERSECTION" ? 0 : 1;
+
+    return {
+      ...data,
+      FUNC_SYS,
+      RELJCT1,
+    }
+  }
+
   useEffect(() => {
     (async () => {
       try {
@@ -103,6 +132,8 @@ const SimpleMap = (props) => {
         });
         console.log(response);
         setAccidents(response.data);
+        const model = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(response.data[0]));
+        console.log('model', model);
       } catch (error) {
         console.log(error);
       }
