@@ -39,6 +39,7 @@ import GoogleMap from 'google-map-react';
 import Marker from './Marker';
 import SearchBox from './SearchBox';
 import axios from 'axios';
+import DatePicker from './DatePicker';
 
 const SimpleMap = (props) => {
   const [googleMap, setGoogleMap] = useState({
@@ -70,6 +71,7 @@ const SimpleMap = (props) => {
   const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(11);
   const [accidents, setAccidents] = useState([]);
+  const [month, setMonth] = useState();
 
   const handleClick = (key) => {
     // console.log("Marker Clicked");
@@ -86,6 +88,10 @@ const SimpleMap = (props) => {
       }
     } ))
     console.log(accidents);
+  }
+
+  const getNumberedMonth = (mon) => {
+    return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1;
   }
 
   useEffect(() => {
@@ -107,6 +113,7 @@ const SimpleMap = (props) => {
             <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
           )
         }
+        <DatePicker month={month} setMonth={setMonth} />
         <GoogleMap
           bootstrapURLKeys={{
               key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
@@ -122,7 +129,9 @@ const SimpleMap = (props) => {
           onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
             {
-              accidents.map(accident => 
+              accidents
+              .filter(accident => !month || accident.MONTH === getNumberedMonth(month))
+              .map(accident => 
                 <Marker 
                   lat={accident.LATITUDE} 
                   lng={accident.LONGITUD} 
