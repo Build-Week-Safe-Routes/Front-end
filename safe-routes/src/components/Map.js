@@ -82,7 +82,7 @@ const SimpleMap = (props) => {
         return {...element, show : !element.show}
       }
       else {
-        return element;
+        return {...element, show: false};
       }
     } ))
     console.log(accidents);
