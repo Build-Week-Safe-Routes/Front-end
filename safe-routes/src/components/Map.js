@@ -96,12 +96,16 @@ const SimpleMap = (props) => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.post('https://protected-badlands-42757.herokuapp.com/api/accident/coords', {
-        LATITUDE: coords.lat,
-        LONGITUD: coords.lng,
-      });
-      console.log(response);
-      setAccidents(response.data);
+      try {
+        const response = await axios.post('https://protected-badlands-42757.herokuapp.com/api/accident/coords', {
+          LATITUDE: coords.lat,
+          LONGITUD: coords.lng,
+        });
+        console.log(response);
+        setAccidents(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, [coords])
 
