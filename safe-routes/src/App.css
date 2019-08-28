@@ -1,9 +1,9 @@
 
 
 
-h1 { 
+.button-wrapper { 
     position: absolute;
-    top: 77px;
+    top: 101px;
     margin-left: 130px;
     text-align: center;
     color:royalblue;
@@ -19,8 +19,7 @@ h1 {
    
 }
 
-Button {
-    /* display: inline-flex; */
+/* Button {
     position: absolute;
     top: 58px;
     left:93%;
@@ -33,7 +32,7 @@ Button {
     margin: 0;
   
 
-}
+} */
 
 .main-image {
     object-fit: cover;

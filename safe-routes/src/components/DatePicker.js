@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Button, Icon } from 'semantic-ui-react';
 import { MonthInput } from 'semantic-ui-calendar-react';
 
 const DatePicker = (props) => {
@@ -21,7 +21,9 @@ const DatePicker = (props) => {
           onChange={handleChange}
         />
       </Form>
-      <h1>Safe Routes</h1>
+      <div className="button-wrapper">
+        <Button primary><Icon name="home" />Safe Routes</Button>
+      </div>
     </>
   )
 }
