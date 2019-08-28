@@ -5,12 +5,7 @@ import { MonthInput } from 'semantic-ui-calendar-react';
 const DatePicker = (props) => {
   const { month, setMonth } = props;
 
-  const getNumberedMonth = (mon) => {
-    return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1;
-  }
-
   const handleChange = (event, { name, value }) => {
-    console.log(getNumberedMonth(value));
     setMonth(value);
   }
   
@@ -21,6 +16,7 @@ const DatePicker = (props) => {
         placeholder="Month"
         iconPosition="left"
         value={month}
+        popupPosition="bottom left"
         onChange={handleChange}
       />
     </Form>

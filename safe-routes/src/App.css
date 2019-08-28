@@ -61,4 +61,11 @@ Button {
     border-radius: 18px;
     padding: 10px;
     z-index: 9999;
-  }
+}
+
+.ui.form {
+    top: 100px;
+    left: 10px;
+    width: 100px;
+    z-index: 22;
+}
