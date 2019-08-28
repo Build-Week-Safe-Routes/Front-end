@@ -16,6 +16,7 @@ const DatePicker = (props) => {
           name="month"
           placeholder="Month"
           iconPosition="left"
+          clearable={true}
           value={month}
           popupPosition="bottom left"
           onChange={handleChange}
