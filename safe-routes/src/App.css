@@ -1,14 +1,14 @@
 
 
 
-h1 {
-    display: none; 
+h1 { 
     position: absolute;
-    top: 50px;
+    top: 77px;
+    margin-left: 130px;
     text-align: center;
     color:royalblue;
-    font-size: 3rem;
-    z-index: 2;
+    font-size: 2rem;
+    z-index: 22;
     background: transparent;
 }
 

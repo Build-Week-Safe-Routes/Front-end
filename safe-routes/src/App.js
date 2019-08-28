@@ -15,10 +15,9 @@ const App = () => {
 
     // ***************UI Elements ***************
 
-  <section className="container">  
-
-   <h1>Safe Routes</h1>
-   <Map />
+  <section className="container">
+    {/* <h1 className="title">Safe Routes</h1> */}
+    <Map />
    {/* <Image src={SampleMap} 
       alt="googleMap" className= "main-image" zindex= "-1" /> */}
 

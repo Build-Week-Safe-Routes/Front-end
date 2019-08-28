@@ -10,16 +10,19 @@ const DatePicker = (props) => {
   }
   
   return (
-    <Form>
-      <MonthInput 
-        name="month"
-        placeholder="Month"
-        iconPosition="left"
-        value={month}
-        popupPosition="bottom left"
-        onChange={handleChange}
-      />
-    </Form>
+    <>
+      <Form>
+        <MonthInput 
+          name="month"
+          placeholder="Month"
+          iconPosition="left"
+          value={month}
+          popupPosition="bottom left"
+          onChange={handleChange}
+        />
+      </Form>
+      <h1>Safe Routes</h1>
+    </>
   )
 }
 
