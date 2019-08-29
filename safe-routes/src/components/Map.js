@@ -114,33 +114,44 @@ const SimpleMap = (props) => {
     return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1;
   }
 
-  const getConvertedData = (data) => {
-    let FUNC_SYS = 99;
-    
-    switch (data.FUNC_SYS) {
-      case "INTERSTATE": 
-        FUNC_SYS = 1;
-        break;
-      case "COLLECTOR":
-        FUNC_SYS = 5;
-        break;
-      case "LOCAL":
-        FUNC_SYS = 7;
-        break;
-      case "ARTERY":
-        FUNC_SYS = 2;
-        break;
-      default:
-        FUNC_SYS = 99;
+  const getConvertedData = (dataArray) => {
+
+    const convertData = (data) => {
+      let FUNC_SYS = 99;
+      const { LATITUDE, LONGITUD, TWAY_ID, TWAY_ID2 } = data;
+      
+      switch (data.FUNC_SYS) {
+        case "INTERSTATE": 
+          FUNC_SYS = 1;
+          break;
+        case "COLLECTOR":
+          FUNC_SYS = 5;
+          break;
+        case "LOCAL":
+          FUNC_SYS = 7;
+          break;
+        case "ARTERY":
+          FUNC_SYS = 2;
+          break;
+        default:
+          FUNC_SYS = 99;
+      }
+  
+      const RELJCT1 = data.TYP_INT === "NOT AN INTERSECTION" ? 0 : 1;
+  
+      return {
+        LATITUDE,
+        LONGITUD,
+        TWAY_ID,
+        TWAY_ID2,
+        FUNC_SYS,
+        RELJCT1,
+      }
     }
 
-    const RELJCT1 = data.TYP_INT === "NOT AN INTERSECTION" ? 0 : 1;
-
-    return {
-      ...data,
-      FUNC_SYS,
-      RELJCT1,
-    }
+    const newData = {};
+    dataArray.forEach(data => newData[data.id] = convertData(data));
+    return newData;
   }
 
   useEffect(() => {
@@ -151,9 +162,14 @@ const SimpleMap = (props) => {
           LONGITUD: coords.lng,
         });
         console.log(response);
-        setAccidents(response.data);
-        const model = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(response.data[0]));
-        console.log('model', model);
+        const accidentsData = response.data;
+        // console.log(getConvertedData(accidentsData));
+        const likelihood = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(accidentsData));
+        const likelihoodData = likelihood.data;
+        // console.log(likelihoodData);
+        accidentsData.forEach(accident => accident.LIKELIHOOD = likelihoodData[accident.id].LIKELIHOOD);
+        console.log(accidentsData);
+        setAccidents(accidentsData);
       } catch (error) {
         console.log(error);
       }
