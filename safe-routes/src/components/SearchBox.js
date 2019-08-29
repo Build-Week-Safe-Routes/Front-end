@@ -7,10 +7,8 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
 
   useEffect(() => {
     if (mapApi) {
-      console.log('entered');
 
       const onPlaceChanged = (place) => {
-        console.log('places-changed!');
     
         if (!place.geometry) {
           return;
@@ -24,8 +22,6 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
         }
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
-        console.log('Lat', lat);
-        console.log('Lng', lng);
         setCoords({
           lat,
           lng,
@@ -37,7 +33,6 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
       searchBox.addListener('place_changed', () => onPlaceChanged(searchBox.getPlace()));
       searchBox.bindTo('bounds', map);
       map.controls[mapApi.ControlPosition.TOP_LEFT].push(search);
-      console.log('exited');
       return () => {
         mapApi.event.clearInstanceListeners(searchBox);
       }

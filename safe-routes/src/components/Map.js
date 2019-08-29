@@ -1,39 +1,3 @@
-// import React, { Component } from 'react';
-// import GoogleMapReact from 'google-map-react';
-
-// const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
-// class SimpleMap extends Component {
-//   static defaultProps = {
-//     center: {
-//       lat: 59.95,
-//       lng: 30.33
-//     },
-//     zoom: 11
-//   };
-
-//   render() {
-//     return (
-//       // Important! Always set the container height explicitly
-//       <div style={{ height: '90vh', width: '100%' }}>
-//         <GoogleMapReact
-//           bootstrapURLKeys={{ key: 'AIzaSyDtGTHRl9IJ9LPI8YcV0Pb0UR6DKlWqoOQ' }}
-//           defaultCenter={this.props.center}
-//           defaultZoom={this.props.zoom}
-//         >
-//           <AnyReactComponent
-//             lat={59.955413}
-//             lng={30.337844}
-//             text="My Marker"
-//           />
-//         </GoogleMapReact>
-//       </div>
-//     );
-//   }
-// }
-
-// export default SimpleMap;
-
 import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
 import Marker from './Marker';
@@ -49,36 +13,26 @@ const SimpleMap = (props) => {
   })
 
   const getMapOptions = (maps) => {
-  // const nycBounds = {north:41.5, south:40,east:-74.5,west: -71.5}  
-   
     return { 
-      // restriction:{latLngBounds:nycBounds, strictBounds: false} ,
       disableDefaultUI: false,
       styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] }],
-      
     };
   };
 
   const getMapBounds = (map, maps) => {
-
-    const bounds = new maps.LatLngBounds()
-    bounds.extend(new maps.LatLng(40,-74.5))
-    bounds.extend(new maps.LatLng(41.5,-72))
-
-    return bounds
+    const bounds = new maps.LatLngBounds();
+    bounds.extend(new maps.LatLng(40,-74.5));
+    bounds.extend(new maps.LatLng(41.5,-72));
+    return bounds;
   }
 
-  
-
-
   const handleApiLoaded = (map, maps) => {
-    console.log('api loaded', maps);
     setGoogleMap({
       mapApiLoaded: true,
       mapInstance: map,
       mapApi: maps,
-       })
-       map.fitBounds(getMapBounds(map, maps))
+    })
+    map.fitBounds(getMapBounds(map, maps))
   };
 
   const [coords, setCoords] = useState({
@@ -94,13 +48,11 @@ const SimpleMap = (props) => {
   const [year, setYear] = useState(2017);
 
   const handleClick = (key) => {
-    // console.log("Marker Clicked");
 
     setAccidents(prevState => prevState.map( element => {
       console.log(key);
       console.log(element.id);
       if (element.id === Number(key)) {
-        // console.log({...element, show : !element.show})
         return {...element, show : !element.show}
       }
       else {
@@ -161,14 +113,10 @@ const SimpleMap = (props) => {
           LATITUDE: coords.lat,
           LONGITUD: coords.lng,
         });
-        console.log(response);
         const accidentsData = response.data;
-        // console.log(getConvertedData(accidentsData));
         const likelihood = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(accidentsData));
         const likelihoodData = likelihood.data;
-        // console.log(likelihoodData);
         accidentsData.forEach(accident => accident.LIKELIHOOD = likelihoodData[accident.id].LIKELIHOOD);
-        console.log(accidentsData);
         setAccidents(accidentsData);
       } catch (error) {
         console.log(error);
@@ -201,8 +149,6 @@ const SimpleMap = (props) => {
           options={getMapOptions}
           onClick={handleMapClick}
           onChildClick={handleClick}
-          // heatmapLibrary={true}
-          // heatmap={{/*data*/}}
           yesIWantToUseGoogleMapApiInternals={true}
           onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
@@ -212,8 +158,7 @@ const SimpleMap = (props) => {
               .map(accident => 
                 <Marker 
                   lat={accident.LATITUDE} 
-                  lng={accident.LONGITUD} 
-                  name="My Marker" 
+                  lng={accident.LONGITUD}  
                   color="blue" 
                   key={accident.id} 
                   accident={accident}
