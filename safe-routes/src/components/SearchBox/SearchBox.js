@@ -9,9 +9,9 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
     if (mapApi) {
 
       const getMapBounds = () => {
-        const bounds = new mapApi.LatLngBounds(
-          new mapApi.LatLng(40,-74.5), 
-          new mapApi.LatLng(41.5,-72));
+        const bounds = new mapApi.LatLngBounds();
+        bounds.extend(new mapApi.LatLng(40, -74.5));
+        bounds.extend(new mapApi.LatLng(41.5,-72));
         return bounds;
       }
 
@@ -38,7 +38,6 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
       }
       const searchBox = new mapApi.places.Autocomplete(search, options);
       searchBox.addListener('place_changed', () => onPlaceChanged(searchBox.getPlace()));
-      searchBox.bindTo('bounds', map);
       map.controls[mapApi.ControlPosition.TOP_LEFT].push(search);
       return () => {
         mapApi.event.clearInstanceListeners(searchBox);
