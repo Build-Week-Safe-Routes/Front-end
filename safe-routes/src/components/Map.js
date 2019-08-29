@@ -49,11 +49,27 @@ const SimpleMap = (props) => {
   })
 
   const getMapOptions = (maps) => {
-    return {
+  // const nycBounds = {north:41.5, south:40,east:-74.5,west: -71.5}  
+   
+    return { 
+      // restriction:{latLngBounds:nycBounds, strictBounds: false} ,
       disableDefaultUI: false,
       styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] }],
+      
     };
   };
+
+  const getMapBounds = (map, maps) => {
+
+    const bounds = new maps.LatLngBounds()
+    bounds.extend(new maps.LatLng(40,-74.5))
+    bounds.extend(new maps.LatLng(41.5,-72))
+
+    return bounds
+  }
+
+  
+
 
   const handleApiLoaded = (map, maps) => {
     console.log('api loaded', maps);
@@ -61,13 +77,16 @@ const SimpleMap = (props) => {
       mapApiLoaded: true,
       mapInstance: map,
       mapApi: maps,
-    })
+       })
+       map.fitBounds(getMapBounds(map, maps))
   };
 
   const [coords, setCoords] = useState({
-    lat: 46.790768,
-    lng: -123.009968,
+    lat: 40.776,
+    lng: -73.956,
   });
+
+
   const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(11);
   const [accidents, setAccidents] = useState([]);
