@@ -23,6 +23,8 @@ const DatePicker = (props) => {
           value={year}
           popupPosition="bottom left"
           onChange={handleChange}
+          maxDate="2017"
+          minDate="2008"
         />
         <MonthInput 
           name="month"
