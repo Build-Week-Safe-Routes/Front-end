@@ -8,7 +8,7 @@ import { reducer, initialState } from '../reducers';
 
 const SimpleMap = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { accidents, googleMap, year, month } = state;
+  const { accidents, googleMap, year, month, coords } = state;
 
   const getMapOptions = (maps) => {
     return { 
@@ -32,14 +32,12 @@ const SimpleMap = (props) => {
     setGoogleMap(map, maps);
   };
 
-  const [coords, setCoords] = useState({
-    lat: 40.776,
-    lng: -73.956,
-  });
-
-
-  const [center, setCenter] = useState([coords.lat, coords.lng]);
-  const [zoom, setZoom] = useState(14);
+  const setCoords = (data) => {
+    dispatch({
+      type: 'COORDS',
+      payload: data,
+    })
+  }
 
   const setAccidents = (data) => {
     dispatch({
@@ -142,8 +140,8 @@ const SimpleMap = (props) => {
               key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
               libraries: ['places', 'visualization', 'geometry'],
               }}
-          defaultCenter={center}
-          defaultZoom={zoom}
+          defaultCenter={[coords.lat, coords.lng]}
+          defaultZoom={14}
           options={getMapOptions}
           onClick={handleMapClick}
           onChildClick={handleClick}

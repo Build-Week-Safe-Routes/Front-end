@@ -35,6 +35,11 @@ export const reducer = (state, action) => {
         ...state,
         googleMap: action.payload,
       }
+    case 'COORDS':
+      return {
+        ...state,
+        coords: action.payload,
+      }
     default: 
       return state;
   }
