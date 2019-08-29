@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import GoogleMap from 'google-map-react';
 import Marker from './Marker/Marker';
 import SearchBox from './SearchBox/SearchBox';
 import axios from 'axios';
 import DatePicker from './DatePicker';
+import { reducer, initialState } from '../reducers';
 
 const SimpleMap = (props) => {
-  const [googleMap, setGoogleMap] = useState({
-    mapApiLoaded: false,
-    mapInstance: null,
-    mapApi: null,
-  })
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { accidents, googleMap, year, month } = state;
 
   const getMapOptions = (maps) => {
     return { 
@@ -19,12 +17,19 @@ const SimpleMap = (props) => {
     };
   };
 
-  const handleApiLoaded = (map, maps) => {
-    setGoogleMap({
-      mapApiLoaded: true,
-      mapInstance: map,
-      mapApi: maps,
+  const setGoogleMap = (map, maps) => {
+    dispatch({
+      type: 'MAP',
+      payload: {
+        mapApiLoaded: true,
+        mapInstance: map,
+        mapApi: maps,
+      }
     })
+  }
+
+  const handleApiLoaded = (map, maps) => {
+    setGoogleMap(map, maps);
   };
 
   const [coords, setCoords] = useState({
@@ -35,20 +40,24 @@ const SimpleMap = (props) => {
 
   const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(14);
-  const [accidents, setAccidents] = useState([]);
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState(2017);
+
+  const setAccidents = (data) => {
+    dispatch({
+      type: 'ACCIDENTS',
+      payload: data,
+    })
+  }
 
   const handleClick = (key) => {
-
-    setAccidents(prevState => prevState.map( element => {
-      if (element.id === Number(key)) {
-        return {...element, show : !element.show}
-      }
-      else {
-        return {...element, show: false};
-      }
-    }))
+    setAccidents(accidents.map( element => {
+        if (element.id === Number(key)) {
+          return {...element, show : !element.show}
+        }
+        else {
+          return {...element, show: false};
+        }
+      }),
+    );
   }
 
   const getNumberedMonth = (mon) => {
@@ -114,9 +123,9 @@ const SimpleMap = (props) => {
   }, [coords])
 
   const handleMapClick = () => {
-    setAccidents(prevState => prevState.map( element => {
-        return {...element, show: false};
-    }))
+    setAccidents(accidents.map(element => {
+      return {...element, show: false};
+    }));
   }
 
   return (
@@ -127,7 +136,7 @@ const SimpleMap = (props) => {
             <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
           )
         }
-        <DatePicker year={year} setYear={setYear} month={month} setMonth={setMonth} />
+        <DatePicker year={year} month={month} dispatch={dispatch} />
         <GoogleMap
           bootstrapURLKeys={{
               key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',

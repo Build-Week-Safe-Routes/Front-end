@@ -3,7 +3,21 @@ import { Form, Button, Icon } from 'semantic-ui-react';
 import { MonthInput, YearInput } from 'semantic-ui-calendar-react';
 
 const DatePicker = (props) => {
-  const { month, setMonth, year, setYear } = props;
+  const { month, year, dispatch } = props;
+
+  const setYear = (value) => {
+    dispatch({
+      type: 'YEAR',
+      payload: value,
+    })
+  }
+
+  const setMonth = (value) => {
+    dispatch({
+      type: 'MONTH',
+      payload: value,
+    })
+  }
 
   const handleChange = (event, { name, value }) => {
     if (name === "month") {
