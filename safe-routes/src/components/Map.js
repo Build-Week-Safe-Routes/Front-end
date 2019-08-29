@@ -36,7 +36,7 @@ const SimpleMap = (props) => {
   const [center, setCenter] = useState([coords.lat, coords.lng]);
   const [zoom, setZoom] = useState(14);
   const [accidents, setAccidents] = useState([]);
-  const [month, setMonth] = useState();
+  const [month, setMonth] = useState('');
   const [year, setYear] = useState(2017);
 
   const handleClick = (key) => {

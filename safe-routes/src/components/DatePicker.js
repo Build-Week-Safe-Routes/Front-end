@@ -20,7 +20,7 @@ const DatePicker = (props) => {
           name="year"
           placeholder="Year"
           iconPosition="left"
-          value={year}
+          value={String(year)}
           popupPosition="bottom left"
           onChange={handleChange}
           maxDate="2017"
