@@ -1,159 +1,121 @@
-// import React, { Component } from 'react';
-// import GoogleMapReact from 'google-map-react';
-
-// const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
-// class SimpleMap extends Component {
-//   static defaultProps = {
-//     center: {
-//       lat: 59.95,
-//       lng: 30.33
-//     },
-//     zoom: 11
-//   };
-
-//   render() {
-//     return (
-//       // Important! Always set the container height explicitly
-//       <div style={{ height: '90vh', width: '100%' }}>
-//         <GoogleMapReact
-//           bootstrapURLKeys={{ key: 'AIzaSyDtGTHRl9IJ9LPI8YcV0Pb0UR6DKlWqoOQ' }}
-//           defaultCenter={this.props.center}
-//           defaultZoom={this.props.zoom}
-//         >
-//           <AnyReactComponent
-//             lat={59.955413}
-//             lng={30.337844}
-//             text="My Marker"
-//           />
-//         </GoogleMapReact>
-//       </div>
-//     );
-//   }
-// }
-
-// export default SimpleMap;
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import GoogleMap from 'google-map-react';
-import Marker from './Marker';
-import SearchBox from './SearchBox';
+import Marker from './Marker/Marker';
+import SearchBox from './SearchBox/SearchBox';
 import axios from 'axios';
 import DatePicker from './DatePicker';
+import { reducer, initialState } from '../reducers';
 
 const SimpleMap = (props) => {
-  const [googleMap, setGoogleMap] = useState({
-    mapApiLoaded: false,
-    mapInstance: null,
-    mapApi: null,
-  })
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { accidents, googleMap, year, month, coords, isLoadingMarkers } = state;
 
   const getMapOptions = (maps) => {
-  // const nycBounds = {north:41.5, south:40,east:-74.5,west: -71.5}  
-   
     return { 
-      // restriction:{latLngBounds:nycBounds, strictBounds: false} ,
       disableDefaultUI: false,
       styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] }],
-      
     };
   };
 
-  const getMapBounds = (map, maps) => {
-
-    const bounds = new maps.LatLngBounds()
-    bounds.extend(new maps.LatLng(40,-74.5))
-    bounds.extend(new maps.LatLng(41.5,-72))
-
-    return bounds
+  const setGoogleMap = (map, maps) => {
+    dispatch({
+      type: 'MAP',
+      payload: {
+        mapApiLoaded: true,
+        mapInstance: map,
+        mapApi: maps,
+      }
+    })
   }
 
-  
-
-
   const handleApiLoaded = (map, maps) => {
-    console.log('api loaded', maps);
-    setGoogleMap({
-      mapApiLoaded: true,
-      mapInstance: map,
-      mapApi: maps,
-       })
-       map.fitBounds(getMapBounds(map, maps))
+    setGoogleMap(map, maps);
   };
 
-  const [coords, setCoords] = useState({
-    lat: 40.776,
-    lng: -73.956,
-  });
+  const setCoords = (data) => {
+    dispatch({
+      type: 'COORDS',
+      payload: data,
+    })
+  }
 
-
-  const [center, setCenter] = useState([coords.lat, coords.lng]);
-  const [zoom, setZoom] = useState(11);
-  const [accidents, setAccidents] = useState([]);
-  const [month, setMonth] = useState();
-  const [year, setYear] = useState(2017);
+  const setAccidents = (data) => {
+    dispatch({
+      type: 'ACCIDENTS',
+      payload: data,
+    })
+  }
 
   const handleClick = (key) => {
-    // console.log("Marker Clicked");
-
-    setAccidents(prevState => prevState.map( element => {
-      console.log(key);
-      console.log(element.id);
-      if (element.id === Number(key)) {
-        // console.log({...element, show : !element.show})
-        return {...element, show : !element.show}
-      }
-      else {
-        return {...element, show: false};
-      }
-    } ))
-    console.log(accidents);
+    setAccidents(accidents.map( element => {
+        if (element.id === Number(key)) {
+          return {...element, show : !element.show}
+        }
+        else {
+          return {...element, show: false};
+        }
+      }),
+    );
   }
 
   const getNumberedMonth = (mon) => {
     return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1;
   }
 
-  const getConvertedData = (data) => {
-    let FUNC_SYS = 99;
-    
-    switch (data.FUNC_SYS) {
-      case "INTERSTATE": 
-        FUNC_SYS = 1;
-        break;
-      case "COLLECTOR":
-        FUNC_SYS = 5;
-        break;
-      case "LOCAL":
-        FUNC_SYS = 7;
-        break;
-      case "ARTERY":
-        FUNC_SYS = 2;
-        break;
-      default:
-        FUNC_SYS = 99;
+  const getConvertedData = (dataArray) => {
+
+    const convertData = (data) => {
+      let FUNC_SYS = 99;
+      const { LATITUDE, LONGITUD, TWAY_ID, TWAY_ID2 } = data;
+      
+      switch (data.FUNC_SYS) {
+        case "INTERSTATE": 
+          FUNC_SYS = 1;
+          break;
+        case "COLLECTOR":
+          FUNC_SYS = 5;
+          break;
+        case "LOCAL":
+          FUNC_SYS = 7;
+          break;
+        case "ARTERY":
+          FUNC_SYS = 2;
+          break;
+        default:
+          FUNC_SYS = 99;
+      }
+  
+      const RELJCT1 = data.TYP_INT === "NOT AN INTERSECTION" ? 0 : 1;
+  
+      return {
+        LATITUDE,
+        LONGITUD,
+        TWAY_ID,
+        TWAY_ID2,
+        FUNC_SYS,
+        RELJCT1,
+      }
     }
 
-    const RELJCT1 = data.TYP_INT === "NOT AN INTERSECTION" ? 0 : 1;
-
-    return {
-      ...data,
-      FUNC_SYS,
-      RELJCT1,
-    }
+    const newData = {};
+    dataArray.forEach(data => newData[data.id] = convertData(data));
+    return newData;
   }
 
   useEffect(() => {
     (async () => {
       try {
+        dispatch({type: 'START_LOADING'});
         const response = await axios.post('https://protected-badlands-42757.herokuapp.com/api/accident/coords', {
           LATITUDE: coords.lat,
           LONGITUD: coords.lng,
         });
-        console.log(response);
-        setAccidents(response.data);
-        const model = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(response.data[0]));
-        console.log('model', model);
+        const accidentsData = response.data;
+        const likelihood = await axios.post('https://saferoutes-pred.herokuapp.com/api', getConvertedData(accidentsData));
+        const likelihoodData = likelihood.data;
+        accidentsData.forEach(accident => accident.LIKELIHOOD = likelihoodData[accident.id].LIKELIHOOD);
+        setAccidents(accidentsData);
+        dispatch({type: 'FINISH_LOADING'});
       } catch (error) {
         console.log(error);
       }
@@ -161,9 +123,9 @@ const SimpleMap = (props) => {
   }, [coords])
 
   const handleMapClick = () => {
-    setAccidents(prevState => prevState.map( element => {
-        return {...element, show: false};
-    }))
+    setAccidents(accidents.map(element => {
+      return {...element, show: false};
+    }));
   }
 
   return (
@@ -171,22 +133,20 @@ const SimpleMap = (props) => {
       <div className="map">
         {
           googleMap.mapApiLoaded && (
-            <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
+            <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} isLoading={isLoadingMarkers} />
           )
         }
-        <DatePicker year={year} setYear={setYear} month={month} setMonth={setMonth} />
+        <DatePicker year={year} month={month} dispatch={dispatch} />
         <GoogleMap
           bootstrapURLKeys={{
               key: 'AIzaSyCauBiq568NmIOh1HuCYXqu9aUyI_PJmQQ',
               libraries: ['places', 'visualization', 'geometry'],
               }}
-          defaultCenter={center}
-          defaultZoom={zoom}
+          defaultCenter={[coords.lat, coords.lng]}
+          defaultZoom={14}
           options={getMapOptions}
           onClick={handleMapClick}
           onChildClick={handleClick}
-          // heatmapLibrary={true}
-          // heatmap={{/*data*/}}
           yesIWantToUseGoogleMapApiInternals={true}
           onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
@@ -196,8 +156,7 @@ const SimpleMap = (props) => {
               .map(accident => 
                 <Marker 
                   lat={accident.LATITUDE} 
-                  lng={accident.LONGITUD} 
-                  name="My Marker" 
+                  lng={accident.LONGITUD}  
                   color="blue" 
                   key={accident.id} 
                   accident={accident}
