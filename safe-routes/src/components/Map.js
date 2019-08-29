@@ -170,4 +170,3 @@ const SimpleMap = (props) => {
 }
 
 export default SimpleMap;
-
