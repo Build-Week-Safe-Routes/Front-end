@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Marker.css';
+import './Marker.css';
 import PopUp from './PopUp';
 
 const Marker = (props) => {

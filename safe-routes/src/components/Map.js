@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
-import Marker from './Marker';
-import SearchBox from './SearchBox';
+import Marker from './Marker/Marker';
+import SearchBox from './SearchBox/SearchBox';
 import axios from 'axios';
 import DatePicker from './DatePicker';
 

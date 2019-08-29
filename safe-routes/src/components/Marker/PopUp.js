@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Marker.css';
+import './Marker.css';
 
 const PopUp = (props) => {
   const { FATALS, DAY, MONTH, WEATHER, PEDS, YEAR, LIKELIHOOD } = props.accident;
