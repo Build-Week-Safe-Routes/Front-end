@@ -8,7 +8,7 @@ import { reducer, initialState } from '../reducers';
 
 const SimpleMap = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { accidents, googleMap, year, month, coords } = state;
+  const { accidents, googleMap, year, month, coords, isLoadingMarkers } = state;
 
   const getMapOptions = (maps) => {
     return { 
@@ -105,6 +105,7 @@ const SimpleMap = (props) => {
   useEffect(() => {
     (async () => {
       try {
+        dispatch({type: 'START_LOADING'});
         const response = await axios.post('https://protected-badlands-42757.herokuapp.com/api/accident/coords', {
           LATITUDE: coords.lat,
           LONGITUD: coords.lng,
@@ -114,6 +115,7 @@ const SimpleMap = (props) => {
         const likelihoodData = likelihood.data;
         accidentsData.forEach(accident => accident.LIKELIHOOD = likelihoodData[accident.id].LIKELIHOOD);
         setAccidents(accidentsData);
+        dispatch({type: 'FINISH_LOADING'});
       } catch (error) {
         console.log(error);
       }
@@ -131,7 +133,7 @@ const SimpleMap = (props) => {
       <div className="map">
         {
           googleMap.mapApiLoaded && (
-            <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} />
+            <SearchBox map={googleMap.mapInstance} mapApi={googleMap.mapApi} setCoords={setCoords} isLoading={isLoadingMarkers} />
           )
         }
         <DatePicker year={year} month={month} dispatch={dispatch} />

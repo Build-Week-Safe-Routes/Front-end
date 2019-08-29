@@ -10,7 +10,8 @@ export const initialState = {
     mapApiLoaded: false,
     mapInstance: null,
     mapApi: null,
-  }
+  },
+  isLoadingMarkers: false,
 };
 
 export const reducer = (state, action) => {
@@ -39,6 +40,16 @@ export const reducer = (state, action) => {
       return {
         ...state,
         coords: action.payload,
+      }
+    case 'START_LOADING':
+      return {
+        ...state,
+        isLoadingMarkers: true,
+      }
+    case 'FINISH_LOADING':
+      return {
+        ...state,
+        isLoadingMarkers: false,
       }
     default: 
       return state;

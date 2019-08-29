@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './SearchBox.css';
 
-const SearchBox = ({ map, mapApi, setCoords }) => {
+const SearchBox = ({ map, mapApi, setCoords, isLoading }) => {
   const searchRef = React.createRef();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
   }, [])
 
   return (
-    <input className="search-box" ref={searchRef} type="text" />
+    <input disabled={isLoading} className="search-box" ref={searchRef} type="text" />
   )
 }
 
