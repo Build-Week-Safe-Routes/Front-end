@@ -19,20 +19,12 @@ const SimpleMap = (props) => {
     };
   };
 
-  const getMapBounds = (map, maps) => {
-    const bounds = new maps.LatLngBounds();
-    bounds.extend(new maps.LatLng(40,-74.5));
-    bounds.extend(new maps.LatLng(41.5,-72));
-    return bounds;
-  }
-
   const handleApiLoaded = (map, maps) => {
     setGoogleMap({
       mapApiLoaded: true,
       mapInstance: map,
       mapApi: maps,
     })
-    map.fitBounds(getMapBounds(map, maps))
   };
 
   const [coords, setCoords] = useState({
@@ -42,7 +34,7 @@ const SimpleMap = (props) => {
 
 
   const [center, setCenter] = useState([coords.lat, coords.lng]);
-  const [zoom, setZoom] = useState(11);
+  const [zoom, setZoom] = useState(14);
   const [accidents, setAccidents] = useState([]);
   const [month, setMonth] = useState();
   const [year, setYear] = useState(2017);
@@ -50,16 +42,13 @@ const SimpleMap = (props) => {
   const handleClick = (key) => {
 
     setAccidents(prevState => prevState.map( element => {
-      console.log(key);
-      console.log(element.id);
       if (element.id === Number(key)) {
         return {...element, show : !element.show}
       }
       else {
         return {...element, show: false};
       }
-    } ))
-    console.log(accidents);
+    }))
   }
 
   const getNumberedMonth = (mon) => {

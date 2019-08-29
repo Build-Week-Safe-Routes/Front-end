@@ -8,18 +8,21 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
   useEffect(() => {
     if (mapApi) {
 
+      const getMapBounds = () => {
+        const bounds = new mapApi.LatLngBounds(
+          new mapApi.LatLng(40,-74.5), 
+          new mapApi.LatLng(41.5,-72));
+        return bounds;
+      }
+
       const onPlaceChanged = (place) => {
     
         if (!place.geometry) {
           return;
         }
-    
-        if (place.geometry.viewport) {
-          map.fitBounds(place.geometry.viewport);
-        } else {
-          map.setCenter(place.geometry.location);
-          map.setZoom(17);
-        }
+  
+        map.setCenter(place.geometry.location);
+        map.setZoom(14);
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
         setCoords({
@@ -29,7 +32,11 @@ const SearchBox = ({ map, mapApi, setCoords }) => {
       };
 
       const search = ReactDOM.findDOMNode(searchRef.current);
-      const searchBox = new mapApi.places.Autocomplete(search);
+      const options = {
+        strictBounds: true,
+        bounds: getMapBounds(),
+      }
+      const searchBox = new mapApi.places.Autocomplete(search, options);
       searchBox.addListener('place_changed', () => onPlaceChanged(searchBox.getPlace()));
       searchBox.bindTo('bounds', map);
       map.controls[mapApi.ControlPosition.TOP_LEFT].push(search);
