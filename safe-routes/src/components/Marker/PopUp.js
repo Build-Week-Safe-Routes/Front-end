@@ -3,7 +3,7 @@ import './Marker.css';
 
 const PopUp = (props) => {
   const { FATALS, DAY, MONTH, WEATHER, PEDS, YEAR, LIKELIHOOD } = props.accident;
-  const formattedLikelihood = Number(LIKELIHOOD.toFixed(2)) * 100 + '%';
+  const formattedLikelihood = (LIKELIHOOD * 100).toFixed(3) + '%';
   return (
       <div className="popUp">
           <p>Date: {`${MONTH}/${DAY}/${YEAR}`}</p>
